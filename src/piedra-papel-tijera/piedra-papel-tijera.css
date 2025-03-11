@@ -1,0 +1,183 @@
+:root {
+    --button-font-size: clamp(16px, 2vw, 20px);
+    --button-margin: clamp(5px, 1vw, 10px);
+    --button-padding: clamp(10px, 2vw, 15px) clamp(20px, 3vw, 30px);
+    --result-font-size: clamp(18px, 3vw, 24px);
+    --background-color: #160029cc;
+    --border-color: #fff;
+    --button-color: #160f18;
+    --button-hover-color: #f0f0f048;
+    --game-button-size: clamp(100px, 25vw, 150px);
+}
+
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    margin: 0;
+    min-height: 100vh;
+    background-color: #242424;
+    color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+header {
+    width: 100%;
+    margin-bottom: -20px;
+}
+
+#piedra-papel-tijera-main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+h1 {
+    font-size: clamp(1.5em, 5vw, 2.5em);
+    margin-bottom: 30px;
+    color: #ffffff;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.8), 0 0 20px rgba(255, 255, 255, 0.6);
+    animation: neon-blink 1.5s ease-in-out infinite alternate;
+}
+
+h2 {
+    font-size: clamp(1.2em, 4vw, 1.5em);
+    margin: 10px 0;
+    color: #ffffff;
+    text-shadow: 0 0 5px rgba(255, 255, 255, 0.6);
+}
+
+#scoreboard {
+    font-size: clamp(1.5em, 4vw, 2em);
+    margin: 20px 0;
+    font-weight: bold;
+    color: #ffffff;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.8), 0 0 20px rgba(255, 255, 255, 0.6);
+    animation: neon-blink 1.5s ease-in-out infinite alternate;
+}
+
+#game-container {
+    background-color: var(--background-color);
+    padding: clamp(10px, 3vw, 20px);
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+    margin: 20px auto;
+    width: 100%;
+    max-width: 800px;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    box-sizing: border-box;
+}
+
+#player-choice, #computer-choice-container {
+    width: 100%;
+    max-width: 600px;
+    margin: 15px 0;
+}
+
+.choices {
+    display: flex;
+    justify-content: center;
+    gap: clamp(10px, 2vw, 20px);
+    flex-wrap: wrap;
+    padding: clamp(5px, 1vw, 10px);
+}
+
+#computer-choice {
+    margin: 0 auto;
+    width: var(--game-button-size);
+    height: var(--game-button-size);
+    background-color: var(--button-color);
+    border: 2px solid var(--border-color);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+
+.game-button {
+    width: var(--game-button-size);
+    height: var(--game-button-size);
+    padding: clamp(5px, 2vw, 10px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.3s ease;
+    background-color: var(--button-color);
+    border: 2px solid var(--border-color);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.game-button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+    background-color: var(--button-hover-color);
+}
+
+.game-button img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    transition: transform 0.3s ease;
+}
+
+#result {
+    font-size: clamp(1.5em, 4vw, 2em);
+    margin: 20px 0;
+    padding: 15px;
+    background-color: var(--background-color);
+    border-radius: 10px;
+    font-weight: bold;
+    color: #ffffff;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.8), 0 0 20px rgba(255, 255, 255, 0.6);
+    animation: neon-blink 1.5s ease-in-out infinite alternate;
+    width: 100%;
+    max-width: 600px;
+    box-sizing: border-box;
+}
+
+@keyframes neon-blink {
+    from {
+        text-shadow: 0 0 15px rgba(255, 255, 255, 0.9), 0 0 25px rgba(255, 255, 255, 0.7);
+    }
+    to {
+        text-shadow: 0 0 30px rgba(255, 255, 255, 1), 0 0 40px rgba(255, 255, 255, 0.9);
+    }
+}
+
+@media (max-width: 480px) {
+    :root {
+        --game-button-size: clamp(80px, 25vw, 100px);
+        --button-margin: 5px;
+        --button-padding: 8px 16px;
+    }
+
+    body {
+        padding: 10px;
+    }
+
+    #game-container {
+        padding: 10px;
+    }
+
+    .choices {
+        gap: 10px;
+    }
+}
+
+@media (min-width: 1200px) {
+    :root {
+        --game-button-size: 150px;
+        --button-margin: 10px;
+        --button-padding: 15px 30px;
+    }
+}
