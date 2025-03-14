@@ -7,27 +7,7 @@
     --border-color: #fff;
     --button-color: #160f18;
     --button-hover-color: #f0f0f048;
-    --game-button-size: clamp(100px, 25vw, 150px);
-}
-
-body {
-    font-family: Arial, sans-serif;
-    text-align: center;
-    margin: 0;
-    min-height: 100vh;
-    background-color: #242424;
-    color: #ffffff;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
-    padding: 20px;
-    box-sizing: border-box;
-}
-
-header {
-    width: 100%;
-    margin-bottom: -20px;
+    --game-button-size: clamp(80px, 15vw, 120px);
 }
 
 #piedra-papel-tijera-main {
@@ -35,26 +15,40 @@ header {
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.game-grid {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    gap: 10px;
 }
 
 h1 {
-    font-size: clamp(1.5em, 5vw, 2.5em);
-    margin-bottom: 30px;
+    font-size: clamp(1.2em, 4vw, 2em);
+    margin: 10px 0;
     color: #ffffff;
     text-shadow: 0 0 10px rgba(255, 255, 255, 0.8), 0 0 20px rgba(255, 255, 255, 0.6);
     animation: neon-blink 1.5s ease-in-out infinite alternate;
 }
 
 h2 {
-    font-size: clamp(1.2em, 4vw, 1.5em);
-    margin: 10px 0;
+    font-size: clamp(1em, 3vw, 1.2em);
+    margin: 5px 0;
     color: #ffffff;
     text-shadow: 0 0 5px rgba(255, 255, 255, 0.6);
 }
 
 #scoreboard {
-    font-size: clamp(1.5em, 4vw, 2em);
-    margin: 20px 0;
+    font-size: clamp(1.2em, 3vw, 1.5em);
+    margin: 10px 0;
     font-weight: bold;
     color: #ffffff;
     text-shadow: 0 0 10px rgba(255, 255, 255, 0.8), 0 0 20px rgba(255, 255, 255, 0.6);
@@ -63,30 +57,32 @@ h2 {
 
 #game-container {
     background-color: var(--background-color);
-    padding: clamp(10px, 3vw, 20px);
+    padding: 10px;
     border-radius: 10px;
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
-    margin: 20px auto;
+    margin: 10px auto;
     width: 100%;
     max-width: 800px;
+    display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 20px;
+    gap: 10px;
     box-sizing: border-box;
 }
 
 #player-choice, #computer-choice-container {
     width: 100%;
     max-width: 600px;
-    margin: 15px 0;
+    margin: 5px 0;
+    flex: 1; /* Añadido para reemplazar el estilo inline */
 }
 
 .choices {
     display: flex;
     justify-content: center;
-    gap: clamp(10px, 2vw, 20px);
+    gap: 10px;
     flex-wrap: wrap;
-    padding: clamp(5px, 1vw, 10px);
+    padding: 5px;
 }
 
 #computer-choice {
@@ -102,11 +98,10 @@ h2 {
     overflow: hidden;
 }
 
-
 .game-button {
     width: var(--game-button-size);
     height: var(--game-button-size);
-    padding: clamp(5px, 2vw, 10px);
+    padding: 5px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -131,9 +126,9 @@ h2 {
 }
 
 #result {
-    font-size: clamp(1.5em, 4vw, 2em);
-    margin: 20px 0;
-    padding: 15px;
+    font-size: clamp(1.2em, 3vw, 1.5em);
+    margin: 10px 0;
+    padding: 10px;
     background-color: var(--background-color);
     border-radius: 10px;
     font-weight: bold;
@@ -143,7 +138,10 @@ h2 {
     width: 100%;
     max-width: 600px;
     box-sizing: border-box;
+    min-height: 50px;
 }
+
+/* Los estilos para .button-container y .control-button se han movido a common-styles.css */
 
 @keyframes neon-blink {
     from {
@@ -154,29 +152,95 @@ h2 {
     }
 }
 
+/* Animación para la elección de la computadora */
+@keyframes shake {
+    0%, 100% {
+        transform: translateX(0);
+    }
+    25% {
+        transform: translateX(-5px);
+    }
+    75% {
+        transform: translateX(5px);
+    }
+}
+
+#computer-choice.animating {
+    animation: shake 0.3s ease-in-out infinite;
+}
+
+/* Transición suave para la imagen de la computadora */
+#computer-img {
+    transition: opacity 0.3s ease-in-out;
+}
+
+#computer-img.fading {
+    opacity: 0;
+}
+
+/* Media queries para diferentes tamaños de pantalla */
+@media (max-height: 700px) {
+    :root {
+        --game-button-size: clamp(60px, 12vw, 100px);
+    }
+    
+    h1 {
+        font-size: clamp(1em, 3vw, 1.5em);
+        margin: 5px 0;
+    }
+    
+    h2 {
+        font-size: clamp(0.9em, 2.5vw, 1.1em);
+        margin: 3px 0;
+    }
+    
+    #scoreboard {
+        font-size: clamp(1em, 2.5vw, 1.3em);
+        margin: 5px 0;
+    }
+    
+    #result {
+        font-size: clamp(1em, 2.5vw, 1.3em);
+        margin: 5px 0;
+        padding: 5px;
+        min-height: 40px;
+    }
+    
+    #game-container {
+        padding: 5px;
+        margin: 5px auto;
+        gap: 5px;
+    }
+    
+    .choices {
+        gap: 5px;
+        padding: 3px;
+    }
+    
+    #player-choice, #computer-choice-container {
+        margin: 3px 0;
+    }
+}
+
 @media (max-width: 480px) {
     :root {
-        --game-button-size: clamp(80px, 25vw, 100px);
-        --button-margin: 5px;
-        --button-padding: 8px 16px;
-    }
-
-    body {
-        padding: 10px;
+        --game-button-size: clamp(60px, 15vw, 90px);
+        --button-margin: 3px;
+        --button-padding: 5px 10px;
     }
 
     #game-container {
-        padding: 10px;
+        padding: 8px;
     }
 
     .choices {
-        gap: 10px;
+        gap: 8px;
     }
 }
 
 @media (min-width: 1200px) {
     :root {
-        --game-button-size: 150px;
+        --game-button-size: 120px;
         --button-margin: 10px;
         --button-padding: 15px 30px;
     }

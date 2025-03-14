@@ -1,0 +1,77 @@
+/* Estilos comunes para todos los juegos */
+
+/* Contenedor para los botones de control */
+.button-container {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin: 10px 0;
+    flex-wrap: wrap;
+}
+
+/* Estilos base para botones */
+.button-base {
+    padding: 8px 15px;
+    font-size: clamp(14px, 2vw, 16px);
+    background-color: #160029;
+    color: white;
+    border: 2px solid #fff;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+    text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+}
+
+.button-base:hover {
+    background-color: #2a0052;
+    transform: scale(1.05);
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+}
+
+.button-base:active {
+    transform: scale(0.98);
+}
+
+/* Botones de control */
+.control-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Icono dentro del botón */
+.button-icon {
+    width: 16px;
+    height: 16px;
+    margin-right: 5px;
+    vertical-align: middle;
+}
+
+/* Botón para resetear marcador */
+#reset-score, #reset-score-tres-en-raya {
+    margin-top: 10px;
+}
+
+/* Media queries para diferentes tamaños de pantalla */
+@media (max-height: 700px) {
+    .button-container {
+        margin: 5px 0;
+    }
+    
+    .button-base, .control-button, #reset-score, #reset-score-tres-en-raya {
+        padding: 5px 10px;
+        font-size: clamp(12px, 1.8vw, 14px);
+    }
+}
+
+@media (max-width: 480px) {
+    .button-container {
+        gap: 5px;
+    }
+    
+    .button-base, .control-button, #reset-score, #reset-score-tres-en-raya {
+        padding: 5px 10px;
+        font-size: clamp(12px, 1.8vw, 14px);
+    }
+} 

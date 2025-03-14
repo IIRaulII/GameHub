@@ -1,102 +1,139 @@
-document.addEventListener('DOMContentLoaded', () => {
-    const container = document.getElementById('tres-en-raya-container');
-    const board = Array(9).fill(null);
-    let currentPlayer = 'X';
+// Variables globales
+let currentPlayer = 'x';
+let gameBoard = ['', '', '', '', '', '', '', '', ''];
+let gameActive = false;
+let scores = { x: 0, o: 0 };
 
-    const createBoard = () => {
-        container.innerHTML = '';
-        board.forEach((cell, index) => {
-            const cellElement = document.createElement('div');
-            cellElement.classList.add('cell');
-            cellElement.dataset.index = index;
-            cellElement.addEventListener('click', handleCellClick);
-            container.appendChild(cellElement);
-        });
-    };
+// Función para inicializar el juego
+function initializeTresEnRaya() {
+    // Cargar puntuaciones guardadas
+    scores.x = parseInt(localStorage.getItem('tresEnRayaScoreX') || '0');
+    scores.o = parseInt(localStorage.getItem('tresEnRayaScoreO') || '0');
+    
+    // Crear el tablero de juego
+    const boardContainer = document.getElementById('tres-en-raya-container');
+    boardContainer.innerHTML = '';
+    
+    for (let i = 0; i < 9; i++) {
+        const cell = document.createElement('div');
+        cell.classList.add('cell');
+        cell.dataset.index = i;
+        cell.addEventListener('click', () => handleCellClick(i));
+        boardContainer.appendChild(cell);
+    }
+    
+    // Configurar los botones de selección de jugador
+    document.getElementById('start-x').addEventListener('click', () => startGame('x'));
+    document.getElementById('start-o').addEventListener('click', () => startGame('o'));
+    
+    // Inicializar el marcador
+    updateTresEnRayaScoreboard();
+    
+    // Iniciar el juego con el jugador X por defecto
+    startGame('x');
+}
 
-    const checkWinner = () => {
-        const winningCombinations = [
-            [0, 1, 2], [3, 4, 5], [6, 7, 8], // Filas
-            [0, 3, 6], [1, 4, 7], [2, 5, 8], // Columnas
-            [0, 4, 8], [2, 4, 6]            // Diagonales
-        ];
-
-        for (const combination of winningCombinations) {
-            const [a, b, c] = combination;
-            if (board[a] && board[a] === board[b] && board[a] === board[c]) {
-                return board[a];
-            }
-        }
-        return null;
-    };
-
-    const updateScore = (winner) => {
-        const scoreKey = `${winner}-score`;
-        const currentScore = parseInt(localStorage.getItem(scoreKey) || '0', 10);
-        localStorage.setItem(scoreKey, currentScore + 1);
-        displayScores();
-    };
-
-    const displayScores = () => {
-        const xScore = localStorage.getItem('X-score') || 0;
-        const oScore = localStorage.getItem('O-score') || 0;
-        document.getElementById('scoreboard').textContent = `Player 1: ${xScore} - Player 2: ${oScore}`;
-    };
-
-    const showVictoryMessage = (winner) => {
-        const winnerMessage = winner === 'X' ? '¡Player 1 ha ganado!' : '¡Player 2 ha ganado!';
-        document.getElementById('victory-message').innerText = winnerMessage;
-        document.getElementById('victory-message').style.display = 'block';
-    };
-
-    const handleCellClick = (event) => {
-        const index = event.target.dataset.index;
-        if (!board[index]) {
-            board[index] = currentPlayer;
-            const img = document.createElement('img');
-            img.src = currentPlayer === 'X' ? '/public/x.png' : '/public/o.png';
-            img.alt = currentPlayer;
-            img.style.width = '100%';
-            img.style.height = '100%';
-            event.target.appendChild(img);
-            const winner = checkWinner();
-            if (winner) {
-                showVictoryMessage(winner);
-                updateScore(winner);
-                document.querySelectorAll('.cell').forEach(cell => {
-                    cell.removeEventListener('click', handleCellClick);
-                });
-                return;
-            }
-            currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
-        }
-    };
-
-    document.getElementById('start-x').addEventListener('click', () => {
-        currentPlayer = 'X';
-        resetGame();
+// Función para iniciar el juego
+function startGame(player) {
+    currentPlayer = player;
+    gameBoard = ['', '', '', '', '', '', '', '', ''];
+    gameActive = true;
+    
+    // Limpiar el tablero
+    const cells = document.querySelectorAll('.cell');
+    cells.forEach(cell => {
+        // No necesitamos limpiar el texto, solo las clases
+        cell.classList.remove('x', 'o');
     });
+    
+    // Ocultar el mensaje de victoria
+    const victoryMessage = document.getElementById('victory-message');
+    victoryMessage.style.display = 'none';
+    
+    // Actualizar el marcador
+    updateTresEnRayaScoreboard();
+}
 
-    document.getElementById('start-o').addEventListener('click', () => {
-        currentPlayer = 'O';
-        resetGame();
+// Función para manejar el clic en una celda
+function handleCellClick(index) {
+    if (!gameActive || gameBoard[index] !== '') return;
+    
+    // Actualizar el tablero
+    gameBoard[index] = currentPlayer;
+    
+    // Actualizar la interfaz
+    const cell = document.querySelector(`.cell[data-index="${index}"]`);
+    cell.classList.add(currentPlayer);
+    
+    // Verificar si hay un ganador
+    if (checkWinner()) {
+        gameActive = false;
+        scores[currentPlayer]++;
+        
+        // Guardar puntuaciones en localStorage
+        localStorage.setItem('tresEnRayaScoreX', scores.x.toString());
+        localStorage.setItem('tresEnRayaScoreO', scores.o.toString());
+        
+        updateTresEnRayaScoreboard();
+        showVictoryMessage(`¡Jugador ${currentPlayer.toUpperCase()} ha ganado!`);
+        return;
+    }
+    
+    // Verificar si hay empate
+    if (gameBoard.every(cell => cell !== '')) {
+        gameActive = false;
+        showVictoryMessage('¡Empate!');
+        return;
+    }
+    
+    // Cambiar de jugador
+    currentPlayer = currentPlayer === 'x' ? 'o' : 'x';
+}
+
+// Función para verificar si hay un ganador
+function checkWinner() {
+    const winPatterns = [
+        [0, 1, 2], [3, 4, 5], [6, 7, 8], // Filas
+        [0, 3, 6], [1, 4, 7], [2, 5, 8], // Columnas
+        [0, 4, 8], [2, 4, 6]             // Diagonales
+    ];
+    
+    return winPatterns.some(pattern => {
+        const [a, b, c] = pattern;
+        return gameBoard[a] !== '' && gameBoard[a] === gameBoard[b] && gameBoard[a] === gameBoard[c];
     });
+}
 
-    const resetGame = () => {
-        board.fill(null);
-        createBoard();
-        document.querySelectorAll('.cell').forEach(cell => {
-            cell.addEventListener('click', handleCellClick);
-        });
-        document.getElementById('victory-message').style.display = 'none';
-    };
+// Función para actualizar el marcador
+function updateTresEnRayaScoreboard() {
+    const scoreboard = document.getElementById('tres-en-raya-scoreboard');
+    scoreboard.textContent = `Jugador X: ${scores.x} - Jugador O: ${scores.o}`;
+    
+    // Guardar puntuaciones en localStorage
+    localStorage.setItem('tresEnRayaScoreX', scores.x.toString());
+    localStorage.setItem('tresEnRayaScoreO', scores.o.toString());
+}
 
-    document.getElementById('reset-score').addEventListener('click', () => {
-        localStorage.setItem('X-score', '0');
-        localStorage.setItem('O-score', '0');
-        displayScores();
-    });
+// Función para mostrar el mensaje de victoria
+function showVictoryMessage(message) {
+    const victoryMessage = document.getElementById('victory-message');
+    victoryMessage.textContent = message;
+    victoryMessage.style.display = 'block';
+}
 
-    createBoard();
-    displayScores();
-}); 
+// Función para resetear el marcador
+function resetTresEnRayaScore() {
+    scores = { x: 0, o: 0 };
+    
+    // Limpiar puntuaciones en localStorage
+    localStorage.setItem('tresEnRayaScoreX', '0');
+    localStorage.setItem('tresEnRayaScoreO', '0');
+    
+    updateTresEnRayaScoreboard();
+    startGame(currentPlayer);
+}
+
+// Función para resetear el juego (llamada desde app.js)
+function resetTresEnRayaGame() {
+    startGame(currentPlayer);
+} 

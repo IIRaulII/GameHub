@@ -3,16 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Game Hub - Inicio</title>
-    <link rel="stylesheet" href="styles.css">
-    <link rel="icon" href="../public/cor.webp" type="image/webp">
+    <title>Game Hub</title>
+    <!-- Solo cargamos los estilos globales en el HTML -->
+    <link rel="stylesheet" href="src/style.css">
+    <link rel="stylesheet" href="src/splash-styles.css">
+    <link rel="stylesheet" href="src/common-styles.css">
+    <link rel="icon" href="public/cor.webp" type="image/webp">
 </head>
-<body class="splash-body">
-    <div class="splash-container">
-        <h1 class="splash-title">Bienvenido a Game Hub</h1>
-        <div id="countdown">3</div>
-        <p class="splash-text">Preparando tus juegos favoritos...</p>
-    </div>
-    <script src="index.js"></script>
+<body>
+    <div id="root"></div>
+
+    <script src="src/app.js"></script>
+    <script src="src/tres-en-raya/tres-en-raya.js"></script>
+    <script src="src/puzzle/puzzle-de-memoria.js"></script>
+    <script src="src/piedra-papel-tijera/piedra-papel-tijera.js"></script>
 </body>
 </html>
