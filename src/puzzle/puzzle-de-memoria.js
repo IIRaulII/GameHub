@@ -290,4 +290,8 @@ function parseBestTime(timeString) {
 // Función para resetear el juego (llamada desde app.js)
 function resetPuzzleGame() {
     initializePuzzle();
-} 
+}
+
+// Exponer las funciones como variables globales para mantener compatibilidad
+window.initializePuzzle = initializePuzzle;
+window.resetPuzzleGame = resetPuzzleGame; 

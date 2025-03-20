@@ -136,4 +136,9 @@ function resetTresEnRayaScore() {
 // Función para resetear el juego (llamada desde app.js)
 function resetTresEnRayaGame() {
     startGame(currentPlayer);
-} 
+}
+
+// Exponer las funciones como variables globales para mantener compatibilidad
+window.initializeTresEnRaya = initializeTresEnRaya;
+window.resetTresEnRayaGame = resetTresEnRayaGame;
+window.resetTresEnRayaScore = resetTresEnRayaScore; 

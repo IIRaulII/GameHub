@@ -199,3 +199,8 @@ function resetScore() {
     computerImg.src = 'public/answ.webp';
     computerImg.alt = '?';
 }
+
+// Exponer las funciones como variables globales para mantener compatibilidad
+window.initializePiedraPapelTijera = initializePiedraPapelTijera;
+window.play = play;
+window.resetScore = resetScore;
